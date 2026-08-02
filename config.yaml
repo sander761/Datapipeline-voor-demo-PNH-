@@ -1,0 +1,96 @@
+# Instellingen voor de Bridge_MKI-pipeline (versie 2).
+#
+# Deze versie haalt naast de BGT ook TOP10NL-data op, om bruggen te kunnen
+# typeren en overkluizingen te herkennen. Stap 01 downloadt alles ongefilterd;
+# het inperken van lagen en kolommen gebeurt pas in latere stappen, zodat je
+# altijd terug kunt naar de ruwe data.
+#
+# Let op de opmaak: YAML gebruikt inspringing met spaties, nooit tabs.
+
+
+# --- Studiegebied ---------------------------------------------------------
+#
+# Gemeentenamen zoals ze in de bestuurlijke-gebieden-API van het Kadaster
+# staan. Hoofdletters en spaties eromheen maken niet uit; een typefout wel,
+# maar dan krijg je bij stap 01 een foutmelding met suggesties.
+
+gemeenten:
+  - Amsterdam
+  - Diemen
+  - Ouder-Amstel
+  - Amstelveen
+
+
+# --- Download-instellingen ------------------------------------------------
+#
+# TOP10NL wordt in tegels opgehaald, omdat een bounding box om zes gemeenten
+# te groot is voor een enkele request.
+
+download:
+
+  # Zijde van een vierkante tegel in meters, voor de TOP10NL-download.
+  tegel_grootte_m: 5000
+
+  # Overlap tussen tegels in meters, zodat objecten op een tegelrand niet
+  # tussen twee tegels wegvallen.
+  tegel_buffer_m: 100
+
+
+# --- Classificatie (stap 05) ----------------------------------------------
+#
+# De beslisboom in stap 05 leidt het verkeerstype bij voorkeur af uit het
+# aantal rijstroken van de TOP10NL-hartlijn. Ontbreekt die informatie, dan valt
+# de breedteklasse terug op de breedte uit oppervlakte gedeeld door lengte, met
+# de grenzen hieronder (in meters).
+#
+# Een brug tot en met de 1x2-grens is een smalle autobrug, tot de 2x2-grens een
+# middenklasse, daarboven de breedste klasse (2x3). De grenzen liggen ruim
+# boven de theoretische rijstrookbreedtes, omdat de geschatte breedte ook
+# bermen en leuningen meeneemt.
+
+classificatie:
+  breedte_grenzen:
+    1x2: 12.0
+    2x2: 28.0
+
+    # --- MKI-kentallen (stap 06) ----------------------------------------------
+#
+# MKI per jaar, waarbij de levensduur al is verrekend (totaal over de
+# levensduur gedeeld door 100). Per profiel: een vast deel (alleen viaducten
+# hebben dat, voor het landhoofd) plus een deel per strekkende meter, dat met
+# de bruglengte wordt vermenigvuldigd.
+#
+# De lengteklassen verschillen per type: viaducten hebben er geen, bruggen
+# knippen op 60 m, fietsbruggen op 20 en 60 m. Stap 06 kiest de klasse op basis
+# van bbox_lengte_m (grenzen: onder = strikt kleiner dan).
+
+mki_kentallen:
+
+  viaduct_1x2:
+    vast_per_jaar: 121.5791
+    per_meter_per_jaar: 6.16
+  viaduct_2x2:
+    vast_per_jaar: 215.8219
+    per_meter_per_jaar: 10.9664
+  viaduct_2x3:
+    vast_per_jaar: 310.7022
+    per_meter_per_jaar: 16.3264
+
+  brug_1x2:
+    - {tot_m: 60, vast_per_jaar: 0, per_meter_per_jaar: 11.3409}
+    - {tot_m: null, vast_per_jaar: 0, per_meter_per_jaar: 18.4097}
+  brug_2x2:
+    - {tot_m: 60, vast_per_jaar: 0, per_meter_per_jaar: 19.700555}
+    - {tot_m: null, vast_per_jaar: 0, per_meter_per_jaar: 31.7548}
+  brug_2x3:
+    - {tot_m: 60, vast_per_jaar: 0, per_meter_per_jaar: 40.4620025}
+    - {tot_m: null, vast_per_jaar: 0, per_meter_per_jaar: 40.8503}
+
+  fietsbrug_over_water:
+    - {tot_m: 20, vast_per_jaar: 0, per_meter_per_jaar: 1.6448}
+    - {tot_m: 60, vast_per_jaar: 0, per_meter_per_jaar: 5.2654}
+    - {tot_m: null, vast_per_jaar: 0, per_meter_per_jaar: 6.0932}
+  fietsbrug_over_weg:
+    - {tot_m: 20, vast_per_jaar: 0, per_meter_per_jaar: 4.0413}
+    - {tot_m: 60, vast_per_jaar: 0, per_meter_per_jaar: 4.1946}
+    - {tot_m: null, vast_per_jaar: 0, per_meter_per_jaar: 6.0932}
