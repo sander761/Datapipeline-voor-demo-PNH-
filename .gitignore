@@ -1,0 +1,3 @@
+# Ignore large generated download files
+/output/01_download/*
+!/output/01_download/.gitkeep
