@@ -8,3 +8,7 @@
 .squad/.cache/
 # Squad: SubSquad activation file (local to this machine)
 .squad-workstream
+# do not upload large data files
+/output/01_download/
+
+
