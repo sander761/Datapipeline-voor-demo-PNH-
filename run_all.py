@@ -25,7 +25,7 @@ logger = common.setup_logging()
 # De stappen in volgorde: (nummer, modulenaam). Het nummer is waarmee je op de
 # opdrachtregel selecteert; de modulenaam is het bestand zonder .py.
 STAPPEN = [
-    # ("01", "01_download"),
+    ("01", "01_download"),
     ("02", "02_clip"),
     ("03", "03_build_bridges"),
     ("04", "04_spatial_relations"),
