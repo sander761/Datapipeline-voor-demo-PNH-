@@ -10,5 +10,14 @@
 .squad-workstream
 # do not upload large data files
 /output/01_download/
-
+/output/02_clip/
+/output/03_build_bridges/
+/output/04_spatial_relations/
+/output/05_classify/
+/output/06_mki/
+/output/07_overzichten/
+/output/08_buurten_mki/
+# do not add pycache files
+__pycache__/
+*.pyc
 
