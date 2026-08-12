@@ -1,0 +1,20 @@
+# Dependencies voor de Bridge-MKI-pipeline én de interactieve Streamlit-viewer.
+#
+# Ondergrenzen (>=) i.p.v. vaste pins, zodat het bestand installeerbaar blijft
+# in zowel een verse .venv als de bestaande anaconda-omgeving. De versies in
+# commentaar zijn de versies waarmee is geverifieerd (2026-08-12).
+#
+# Installeren:  pip install -r requirements.txt
+
+# --- Viewer (Streamlit) ---------------------------------------------------
+streamlit>=1.51          # geverifieerd: 1.51.0
+streamlit-folium>=0.15   # kaartcomponent (folium in Streamlit)
+folium>=0.15             # kaartbibliotheek (afhankelijkheid van streamlit-folium)
+
+# --- Bestaande pipeline-afhankelijkheden ----------------------------------
+geopandas>=1.0           # geverifieerd: 1.1.4
+pandas>=2.0              # geverifieerd: 2.3.3
+plotly>=5.20             # geverifieerd: 6.3.0 (grafieken uit stap 07)
+pyyaml>=6.0              # geverifieerd: 6.0.3 (config.yaml)
+openpyxl>=3.1            # geverifieerd: 3.1.5 (Excel-output)
+pyogrio>=0.8             # geverifieerd: 0.13.0 (GeoPackage-IO voor geopandas)

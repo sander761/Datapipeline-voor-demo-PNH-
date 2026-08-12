@@ -94,3 +94,21 @@ mki_kentallen:
     - {tot_m: 20, vast_per_jaar: 0, per_meter_per_jaar: 4.0413}
     - {tot_m: 60, vast_per_jaar: 0, per_meter_per_jaar: 4.1946}
     - {tot_m: null, vast_per_jaar: 0, per_meter_per_jaar: 6.0932}
+
+
+# --- Viewer (interactieve kaart, los van de pipeline) ---------------------
+#
+# Deze sectie stuurt alleen de Streamlit-viewer; de pipeline (stap 01-08) leest
+# hem niet en verandert er niet door. Handig om de kaart licht te houden zonder
+# de studiegebied-lijst hierboven aan te raken.
+
+viewer:
+
+  # Gemeenten die de viewer NIET toont (de pipeline gebruikt ze wel). Amsterdam
+  # is uitgesloten vanwege de kaartprestaties (~71% van de bruggen).
+  uitgesloten_gemeenten:
+    - Amsterdam
+
+  # Vereenvoudigingstolerantie (meters, RD New) voor de brugpolygonen op de kaart.
+  # Groter = minder detail, lichtere kaart. 0 of afwezig = geen vereenvoudiging.
+  kaart_simplify_tolerantie_m: 2.0
